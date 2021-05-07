@@ -11,3 +11,4 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
 }
+
