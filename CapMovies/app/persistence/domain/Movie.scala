@@ -2,16 +2,29 @@ package persistence.domain
 
 import play.api.data.Forms._
 import play.api.data.Form
+import play.api.data.format.Formats.doubleFormat
+import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.__
+import reactivemongo.bson.BSONObjectID
+import reactivemongo.bson.BSONDocument
+import reactivemongo.play.json._
 
-case class Movie(id: Int, name: String, director: String)
+case class Movie(_id: Option[BSONObjectID], title: String, director: String, rating: String)
+
+case class MovieTemp(title: String, director: String, rating: String)
+
+object JsonFormat {
+  // Generates Writes and Reads for Feed and User thanks to Json Macros
+  implicit val movieFormat: OFormat[Movie] = Json.format[Movie]
+}
 
 object MovieForm {
-  val submitForm =
+  val submitForm: Form[MovieTemp] =
     Form(
       mapping(
-        "id" -> default(number, 0),
-        "name" -> nonEmptyText,
-        "director" -> nonEmptyText
-      )(Movie.apply)(Movie.unapply)
+        "title" -> nonEmptyText,
+        "director" -> nonEmptyText,
+        "rating" -> nonEmptyText
+      )(MovieTemp.apply)(MovieTemp.unapply)
     )
 }
