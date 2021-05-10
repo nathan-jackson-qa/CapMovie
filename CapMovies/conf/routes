@@ -5,4 +5,4 @@ GET     /                           controllers.HomeController.index
 GET     /CreatePage                 controllers.Create.CreatePage()
 
 + nocsrf
-POST   /Create                     controllers.Create.AddMovie
+POST   /Create                     controllers.Create.AddMovie()
