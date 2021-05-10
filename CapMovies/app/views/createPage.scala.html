@@ -1,0 +1,21 @@
+@()(implicit request: RequestHeader, flash: Flash)
+@main(){
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2>Add Movie</h2>
+<form method = "post" action = "@routes.Create.AddMovie">
+    Title: <input type="text" name="name"></input>
+    <br>
+    Description: <input type="text" name="description"></input>
+    <br>
+    <input type="Submit"></input>
+</form>
+</body>
+</html>
+}
