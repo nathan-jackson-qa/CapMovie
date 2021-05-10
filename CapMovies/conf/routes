@@ -1,3 +1,5 @@
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 GET     /                           controllers.HomeController.index
+
+GET     /movie/$id<[0-9]+>          controllers.HomeController.moviePage(id: Int)
