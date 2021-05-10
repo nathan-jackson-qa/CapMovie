@@ -18,5 +18,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     // Do delete functions here
     Ok(views.html.index())
   }
+
+  def updateMovie(id: Int) = Action {
+
+    Ok(views.html.update())
+  }
 }
 
