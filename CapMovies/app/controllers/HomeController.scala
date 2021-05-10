@@ -10,5 +10,8 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.index())
   }
 
+  def moviePage(id: Int) = Action {
+    Ok(views.html.moviePage())
+  }
 }
 
