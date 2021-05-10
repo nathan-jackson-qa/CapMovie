@@ -11,7 +11,12 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
   def moviePage(id: Int) = Action {
-    Ok(views.html.moviePage())
+    Ok(views.html.moviePage(id))
+  }
+
+  def deleteMovie(id: Int) = Action {
+    // Do delete functions here
+    Ok(views.html.index())
   }
 }
 
