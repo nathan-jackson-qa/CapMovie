@@ -5,10 +5,13 @@
 @main() {
     <div class="px-4 py-3 my-5 text-center border-bottom">
             <div class="row-md">
-                <p class="lead mb-4">Enter search term:</p>
                 @helper.form(routes.HomeController.search) {
-                    @helper.inputText(form("searchTerm"))
-                    <button class="btn btn-primary" type="submit" id="submit">Search</button>
+                    @helper.input(form("searchTerm"), Symbol("_label") -> ("Search here:")) { (id, name, value, args) =>
+                    <div class="input-group">
+                            <input class="form-control" type="text" name="@name" id="@id" @toHtmlArgs(args)>
+                            <button class="btn btn-outline-secondary" type="submit" id="search">Search</button>
+                    </div>
+                    }
                 }
             </div>
     </div>
