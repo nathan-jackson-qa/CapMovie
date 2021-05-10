@@ -1,5 +1,17 @@
-@()
+@import views.html.helper.form
+@import persistence.domain.{Movie, MovieForm}
+@(id: Int, form: Form[Movie])(implicit messages: Messages)
 
 @main() {
-
+    @helper.form(routes.HomeController.updateMovie(id)) {
+    <div class="form-floating text-center">
+        <div style="display: none">
+            @helper.inputText(form("id"),
+            Symbol("readonly") -> "readonly")
+        </div>
+        @helper.inputText(form("name"))
+        @helper.inputText(form("director"))
+        <button class="btn btn-primary" type="submit" id="submit">Update</button>
+    </div>
+    }
 }
