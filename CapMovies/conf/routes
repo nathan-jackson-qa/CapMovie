@@ -7,3 +7,5 @@ GET     /movie/$id<[0-9]+>          controllers.HomeController.moviePage(id: Int
 GET     /delete/$id<[0-9]+>         controllers.HomeController.deleteMovie(id: Int)
 
 GET     /update/$id<[0-9]+>         controllers.HomeController.updateMovie(id: Int)
+
+GET     /search                     controllers.HomeController.search
