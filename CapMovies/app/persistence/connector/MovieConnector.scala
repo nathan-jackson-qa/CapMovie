@@ -55,4 +55,6 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
   def update() = ???
 
   def delete() = ???
+
+  def search() = ???
 }
