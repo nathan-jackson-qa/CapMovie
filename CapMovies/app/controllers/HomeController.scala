@@ -5,15 +5,21 @@ import play.api.mvc._
 import persistence.domain.{Movie, MovieTemp, MovieForm, Search, SearchForm}
 import persistence.connector.MovieConnector
 import play.api.i18n.I18nSupport
+import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 import reactivemongo.bson.BSONObjectID
 
+
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) extends AbstractController(cc) with I18nSupport {
 
-  def index = Action {
-    Ok(views.html.index())
+  def index = Action async {
+    mc.list().map { result =>
+      println(result)
+      Ok(views.html.index())
+    }
+
   }
 
   def moviePage(id: BSONObjectID) = Action.async { // should take a movie? object id? as a parameter
@@ -36,12 +42,13 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     })
   }
 
-  def search() = Action { implicit request =>
+  def search() = Action async { implicit request =>
     SearchForm.submitForm.bindFromRequest().fold( { formWithErrors =>
-      BadRequest(views.html.search(formWithErrors))
-    }, { searchTerm =>
-      println(searchTerm)
-      Redirect("/search")
+      Future { BadRequest(views.html.search(formWithErrors, null)) }
+    }, { s =>
+      mc.search(s.searchTerm).map { results =>
+        Ok(views.html.search(SearchForm.submitForm.fill(s), results))
+      }
     })
   }
 
