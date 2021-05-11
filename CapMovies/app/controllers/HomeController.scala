@@ -14,8 +14,12 @@ import reactivemongo.bson.BSONObjectID
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) extends AbstractController(cc) with I18nSupport {
 
-  def index = Action {
-    Ok(views.html.index())
+  def index = Action async {
+    mc.list().map { result =>
+      println(result)
+      Ok(views.html.index())
+    }
+
   }
 
   def moviePage(id: BSONObjectID) = Action.async { // should take a movie? object id? as a parameter
