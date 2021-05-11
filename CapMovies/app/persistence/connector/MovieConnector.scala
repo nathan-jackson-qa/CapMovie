@@ -52,7 +52,20 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     }
   }
 
-  def update() = ???
+  def update(id: BSONObjectID): Future[Movie] = {
+    ws.url(backend+"/update/"+id.stringify).withRequestTimeout(5000.millis).get()map { response =>
+      val tryId = BSONObjectID.parse(((response.json \ "_id") \ "$oid").as[String])
+      tryId match {
+        case Success(objectId) =>Movie(objectId,
+          (response.json \ "title").as[String],
+          (response.json \ "director").as[String],
+          (response.json \ "rating").as[String],
+          (response.json \ "genre").as[String],
+          (response.json \ "img").as[String])
+        case Failure(_) => null
+      }
+    }
+  }
 
   def delete() = ???
 }
