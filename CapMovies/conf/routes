@@ -8,4 +8,6 @@ GET     /delete/$id<[0-9]+>         controllers.HomeController.deleteMovie(id: I
 
 GET     /update/$id<[0-9]+>         controllers.HomeController.updateMovie(id: Int)
 
-GET     /search                     controllers.HomeController.search
+GET     /search                     controllers.HomeController.search()
+
+GET     /test                       controllers.HomeController.testPrint()
