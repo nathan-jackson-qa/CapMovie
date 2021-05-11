@@ -36,7 +36,9 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
         case Success(objectId) =>Movie(objectId,
           (response.json \ "title").as[String],
           (response.json \ "director").as[String],
-          (response.json \ "rating").as[String])
+          (response.json \ "rating").as[String],
+          (response.json \ "genre").as[String],
+          (response.json \ "img").as[String])
         case Failure(_) => null
       }
     }
