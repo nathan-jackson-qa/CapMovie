@@ -29,6 +29,8 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     }
   }
 
+  def create = ???
+
   def read(id: BSONObjectID): Future[Movie] = {
     ws.url(backend+"/read/"+id.stringify).withRequestTimeout(5000.millis).get().map { response =>
       val tryId = BSONObjectID.parse(((response.json \ "_id") \ "$oid").as[String])
@@ -49,4 +51,8 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       
     }
   }
+
+  def update() = ???
+
+  def delete() = ???
 }
