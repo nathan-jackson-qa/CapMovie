@@ -58,7 +58,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
 
   def delete() = ???
 
-  def search(searchTerm: String): Future[Seq[Movie]] = { // TODO
+  def search(searchTerm: String): Future[Seq[Movie]] = {
     var movies: Seq[Movie] = Seq.empty[Movie]
     ws.url(backend+"/search/"+searchTerm).withRequestTimeout(5000.millis).get().map { response =>
       for (movie <- response.json.as[JsArray].value) {
