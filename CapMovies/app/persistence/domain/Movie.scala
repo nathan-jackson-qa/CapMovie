@@ -9,9 +9,9 @@ import reactivemongo.bson.BSONObjectID
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json._
 
-case class Movie(_id: BSONObjectID, title: String, director: String, rating: String)
+case class Movie(_id: BSONObjectID, title: String, director: String, rating: String, genre: String, img: String)
 
-case class MovieTemp(title: String, director: String, rating: String)
+case class MovieTemp(title: String, director: String, rating: String, genre: String, img: String)
 
 object JsonFormat {
   // Generates Writes and Reads for Feed and User thanks to Json Macros
@@ -24,7 +24,9 @@ object MovieForm {
       mapping(
         "title" -> nonEmptyText,
         "director" -> nonEmptyText,
-        "rating" -> nonEmptyText
+        "rating" -> nonEmptyText,
+        "genre" -> nonEmptyText,
+        "img" -> nonEmptyText
       )(MovieTemp.apply)(MovieTemp.unapply)
     )
 }
