@@ -56,5 +56,13 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
 
   def delete() = ???
 
-  def search() = ???
+  def search(searchTerm: String): Future[Seq[Movie]] = {
+    val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
+    tryId match {
+      case Success(objectId) => Future(Seq(Movie(objectId,"Gladiator","paul","12","cool", "images/posters/gladiator.jpg")))
+
+      case Failure(_) => null
+    }
+
+  }
 }

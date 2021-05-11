@@ -1,6 +1,6 @@
 @import views.html.helper.form
-@import persistence.domain.{Search, SearchForm}
-@(form: Form[Search])(implicit messages: Messages)
+@import persistence.domain.{Search, SearchForm, Movie}
+@(form: Form[Search], movies: Seq[Movie])(implicit messages: Messages)
 
 @main() {
     <div class="px-4 py-3 my-5 text-center border-bottom">
@@ -8,7 +8,7 @@
                 @helper.form(routes.HomeController.search()) {
                     @helper.input(form("searchTerm"), Symbol("_label") -> ("Search here:")) { (id, name, value, args) =>
                     <div class="input-group">
-                            <input class="form-control" type="text" name="@name" id="@id" @toHtmlArgs(args)>
+                            <input class="form-control" type="text" name="@name" id="@id" value="@value" @toHtmlArgs(args)>
                             <button class="btn btn-outline-secondary" type="submit" id="search">Search</button>
                     </div>
                     }
@@ -16,6 +16,23 @@
             </div>
     </div>
     <div>
-        Here we would have movie cards gallery
+        @if(movies != null) {
+            <div class="card-deck m-2 mb-20 text-dark">
+                <div class="row">
+                    @for(movie <- movies) {
+                    <div class="col">
+                        <div class="card text-center m-2" style="width: 20rem;">
+                            <a href="/movie/@movie._id.stringify">
+                                <img id="@movie.title poster" class="card-image-top" src="@routes.Assets.versioned(movie.img)" alt="movie poster">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">@movie.title</h5>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        }
     </div>
 }
