@@ -30,7 +30,7 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
 
   def updateMovie(id:BSONObjectID) = Action { implicit request => // should take a movie object id? as a parameter
     MovieForm.submitForm.bindFromRequest().fold( { formWithErrors =>
-      BadRequest(views.html.update(id.stringify, MovieForm.submitForm.fill(MovieTemp("Nemo", "human", "18", "Horror", "scary.jpg"))))
+      BadRequest(views.html.update(id, MovieForm.submitForm.fill(MovieTemp("Nemo", "human", "18", "Horror", "scary.jpg"))))
     }, { updatedMovie =>
       Redirect("/movie/"+id.stringify)
     })
