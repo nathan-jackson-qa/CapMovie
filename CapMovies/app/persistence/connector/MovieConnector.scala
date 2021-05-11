@@ -46,9 +46,22 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     }
   }
 
-  def list() = {
+  def list(): Future[Seq[Movie]] = {
+    var movies: Seq[Movie] = Seq.empty[Movie]
     ws.url(backend+"/list").withRequestTimeout(5000.millis).get().map { response =>
-      
+      for (movie <- response.json.as[JsArray].value) {
+        val tryId = BSONObjectID.parse(((movie \ "_id") \ "$oid").as[String])
+        tryId match {
+          case Success(objectId) => movies = movies :+ (Movie(objectId,
+            (movie \ "title").as[String],
+            (movie \ "director").as[String],
+            (movie \ "rating").as[String],
+            (movie \ "genre").as[String],
+            (movie \ "img").as[String]))
+          case Failure(_) =>
+        }
+      }
+      movies
     }
   }
 
