@@ -1,6 +1,7 @@
 @import views.html.helper.form
 @import persistence.domain.{Movie, MovieTemp, MovieForm}
-@(id: Int, form: Form[MovieTemp])(implicit messages: Messages)
+@import reactivemongo.bson.BSONObjectID
+@(id: BSONObjectID, form: Form[MovieTemp])(implicit messages: Messages)
 
 @main() {
     @helper.form(routes.HomeController.updateMovie(id)) {
