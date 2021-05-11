@@ -1,21 +1,15 @@
-@()(implicit request: RequestHeader, flash: Flash)
+@import views.html.helper.form
+@import persistence.domain.{Movie, MovieTemp, MovieForm}
+@(form: Form[MovieTemp])(implicit messages: Messages)
 @main(){
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-<h2>Add Movie</h2>
-<form  action = "@routes.Create.AddMovie" method = "post">
-    Title: <input type="text" name="name"></input>
-    <br>
-    Description: <input type="text" name="description"></input>
-    <br>
-    <input type="Submit"></input>
-</form>
-</body>
-</html>
+@helper.form(routes.Create.AddMovie()) {
+<div class="form-floating text-center">
+    @helper.inputText(form("title"), Symbol("_label") -> ("Movie title:"))
+    @helper.inputText(form("director"), Symbol("_label") -> ("Director name:"))
+    @helper.inputText(form("rating"), Symbol("_label") -> ("Rating:"))
+    @helper.inputText(form("genre"), Symbol("_label") -> ("Genre:"))
+    @helper.inputText(form("img"), Symbol("_label") -> ("ImageURL:"))
+    <button class="btn btn-primary" type="submit" id="submit">Update</button>
+</div>
+}
 }
