@@ -1,3 +1,5 @@
+import play.sbt.routes.RoutesKeys
+
 name := "Recipies_New_Play_Version"
  
 version := "1.0" 
@@ -25,6 +27,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json-joda" % "2.7.4"
 )
 
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
+unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
-      
+RoutesKeys.routesImport += "play.modules.reactivemongo.PathBindables._"

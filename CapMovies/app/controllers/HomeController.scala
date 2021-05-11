@@ -7,6 +7,7 @@ import persistence.connector.MovieConnector
 import play.api.i18n.I18nSupport
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
+import reactivemongo.bson.BSONObjectID
 
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) extends AbstractController(cc) with I18nSupport {
@@ -15,8 +16,11 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     Ok(views.html.index())
   }
 
-  def moviePage(id: Int) = Action { // should take a movie? object id? as a parameter
-    Ok(views.html.moviePage(id))
+  def moviePage(id: BSONObjectID) = Action.async { // should take a movie? object id? as a parameter
+    mc.read(id).map { result =>
+      Ok(views.html.moviePage(result))
+    }
+
   }
 
   def deleteMovie(id: Int) = Action {
@@ -43,9 +47,7 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
   }
 
   def testPrint() = Action{ implicit request =>
-    mc.read().onComplete{ result =>
-      println(result)
-    }
+
     Ok(views.html.index())
   }
 }

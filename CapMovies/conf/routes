@@ -2,7 +2,7 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /                           controllers.HomeController.index
 
-GET     /movie/$id<[0-9]+>          controllers.HomeController.moviePage(id: Int)
+GET     /movie/:id                  controllers.HomeController.moviePage(id: reactivemongo.bson.BSONObjectID)
 
 GET     /delete/$id<[0-9]+>         controllers.HomeController.deleteMovie(id: Int)
 

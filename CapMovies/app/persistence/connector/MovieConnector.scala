@@ -14,16 +14,31 @@ import play.api.http.HttpEntity
 import akka.actor.ActorSystem
 import akka.stream.scaladsl._
 import akka.util.ByteString
+import scala.util.{Failure, Success}
 
-
+import reactivemongo.bson.{BSONDocument, BSONObjectID}
 
 
 class MovieConnector @Inject()(ws: WSClient, val controllerComponents: ControllerComponents, val ec: ExecutionContext) extends BaseController  {
 
-  def read(): Future[String] = {
-    ws.url("http://localhost:9001/list").withRequestTimeout(5000.millis).get().map { response =>
-      (response.json \ "title").as[String]
+  val backend = "http://localhost:9001"
+
+  def test(): Future[String] = {
+    ws.url(backend+"/read/60992b3a946c653550889f5c").withRequestTimeout(5000.millis).get().map { response =>
+      ((response.json \ "_id") \ "$oid").as[String]
     }
   }
 
+  def read(id: BSONObjectID): Future[Movie] = {
+    ws.url(backend+"/read/"+id.stringify).withRequestTimeout(5000.millis).get().map { response =>
+      val tryId = BSONObjectID.parse(((response.json \ "_id") \ "$oid").as[String])
+      tryId match {
+        case Success(objectId) =>Movie(objectId.asOpt[BSONObjectID],
+          (response.json \ "title").as[String],
+          (response.json \ "director").as[String],
+          (response.json \ "rating").as[String])
+        case Failure(_) => null
+      }
+    }
+  }
 }
