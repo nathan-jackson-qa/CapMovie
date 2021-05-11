@@ -41,4 +41,10 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       }
     }
   }
+
+  def list() = {
+    ws.url(backend+"/list").withRequestTimeout(5000.millis).get().map { response =>
+      
+    }
+  }
 }

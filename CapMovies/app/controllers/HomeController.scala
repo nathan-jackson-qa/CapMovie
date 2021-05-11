@@ -20,7 +20,6 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     mc.read(id).map { result =>
       Ok(views.html.moviePage(result))
     }
-
   }
 
   def deleteMovie(id: Int) = Action {
@@ -47,7 +46,6 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
   }
 
   def testPrint() = Action{ implicit request =>
-
     Ok(views.html.index())
   }
 }
