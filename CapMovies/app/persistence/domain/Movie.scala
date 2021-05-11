@@ -9,7 +9,7 @@ import reactivemongo.bson.BSONObjectID
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json._
 
-case class Movie(_id: Option[BSONObjectID], title: String, director: String, rating: String)
+case class Movie(_id: BSONObjectID, title: String, director: String, rating: String)
 
 case class MovieTemp(title: String, director: String, rating: String)
 

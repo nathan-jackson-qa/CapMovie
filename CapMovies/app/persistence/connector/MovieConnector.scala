@@ -33,7 +33,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     ws.url(backend+"/read/"+id.stringify).withRequestTimeout(5000.millis).get().map { response =>
       val tryId = BSONObjectID.parse(((response.json \ "_id") \ "$oid").as[String])
       tryId match {
-        case Success(objectId) =>Movie(objectId.asOpt[BSONObjectID],
+        case Success(objectId) =>Movie(objectId,
           (response.json \ "title").as[String],
           (response.json \ "director").as[String],
           (response.json \ "rating").as[String])

@@ -5,13 +5,13 @@
 @main() {
     <div class="row g-0 border rounded overflow-hidden flex-md-row my-4 mx-4 shadow-sm h-md-250 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary">2 awards</strong>
+            <strong class="d-inline-block mb-2 text-primary">Rated @movie.rating</strong>
             <h3 class="mb-0">@movie.title</h3>
-            <div class="mb-1 text-muted">Directed by a human</div>
+            <div class="mb-1 text-muted">Directed by @movie.director</div>
             <p class="card-text mb-auto">A very long movie about fish getting lost and found.</p>
             <div class="row-md">
-                <a role="button" class="btn btn-primary" href="/update/@movie._id">Update</a>
-                <a role="button" class="btn btn-danger" href="/delete/@movie._id">Delete</a>
+                <a role="button" class="btn btn-primary" href="/update/@movie._id.stringify">Update</a>
+                <a role="button" class="btn btn-danger" href="/delete/@movie._id.stringify">Delete</a>
             </div>
         </div>
         <div class="col-auto d-none d-lg-block">
