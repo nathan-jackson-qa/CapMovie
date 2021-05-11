@@ -5,7 +5,7 @@
 @main() {
     <div class="px-4 py-3 my-5 text-center border-bottom">
             <div class="row-md">
-                @helper.form(routes.HomeController.search) {
+                @helper.form(routes.HomeController.search()) {
                     @helper.input(form("searchTerm"), Symbol("_label") -> ("Search here:")) { (id, name, value, args) =>
                     <div class="input-group">
                             <input class="form-control" type="text" name="@name" id="@id" @toHtmlArgs(args)>
