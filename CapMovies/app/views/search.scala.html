@@ -1,0 +1,21 @@
+@import views.html.helper.form
+@import persistence.domain.{Search, SearchForm}
+@(form: Form[Search])(implicit messages: Messages)
+
+@main() {
+    <div class="px-4 py-3 my-5 text-center border-bottom">
+            <div class="row-md">
+                @helper.form(routes.HomeController.search) {
+                    @helper.input(form("searchTerm"), Symbol("_label") -> ("Search here:")) { (id, name, value, args) =>
+                    <div class="input-group">
+                            <input class="form-control" type="text" name="@name" id="@id" @toHtmlArgs(args)>
+                            <button class="btn btn-outline-secondary" type="submit" id="search">Search</button>
+                    </div>
+                    }
+                }
+            </div>
+    </div>
+    <div>
+        Here we would have movie cards gallery
+    </div>
+}
