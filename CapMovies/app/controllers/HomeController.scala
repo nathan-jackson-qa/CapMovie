@@ -14,10 +14,9 @@ import reactivemongo.bson.BSONObjectID
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) extends AbstractController(cc) with I18nSupport {
 
-  def index = Action async {
-    mc.list().map { result =>
-      println(result)
-      Ok(views.html.index())
+  def index = Action.async {
+    mc.list().map {
+      result => Ok(views.html.index(result))
     }
 
   }
@@ -30,7 +29,7 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
 
   def deleteMovie(id: Int) = Action {
     // Do delete functions here
-    Ok(views.html.index())
+    Ok(views.html.index(""))
   }
 
   def updateMovie(id: BSONObjectID) = Action { implicit request =>// should take a movie object id? as a parameter

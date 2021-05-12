@@ -1,4 +1,4 @@
-@()
+@(movies: Seq[Movie])
 
 @main() {
     <div class="px-4 pt-5 my-5 text-center border-bottom">
@@ -9,6 +9,8 @@
     </div>
 
     <div> <!-- movie list -->
-        Here lies the movie gallery
+        @for(movie <- movies) {
+        <h5>@movie.title</h5>
+        }
     </div>
 }
