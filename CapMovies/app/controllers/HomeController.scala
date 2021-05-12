@@ -35,9 +35,9 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
   def updateMovie(id: BSONObjectID) = Action { implicit request =>// should take a movie object id? as a parameter
 
     MovieForm.submitForm.bindFromRequest().fold( { formWithErrors =>
-      BadRequest(views.html.update(id, MovieForm.submitForm.fill(MovieTemp("N/A", "N/A", "N/A", "N/A", "N/A"))))
+      BadRequest(views.html.update(id, MovieForm.submitForm.fill(MovieTemp("N/A", "N/A","N/A", "N/A", "N/A", "N/A"))))
     }, { updatedMovie =>
-      val newMov = Movie (id,updatedMovie.title,updatedMovie.director,updatedMovie.rating,updatedMovie.genre,updatedMovie.img)
+      val newMov = Movie (id,updatedMovie.title,updatedMovie.director,updatedMovie.actors, updatedMovie.rating,updatedMovie.genre,updatedMovie.img)
       mc.update(newMov)
       Redirect("/movie/"+id.stringify)
     })

@@ -59,6 +59,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
           case Success(objectId) => movies = movies :+ (Movie(objectId,
             (movie \ "title").as[String],
             (movie \ "director").as[String],
+            (movie \ "actors").as[String],
             (movie \ "rating").as[String],
             (movie \ "genre").as[String],
             (movie \ "img").as[String]))
@@ -73,7 +74,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     val newMov = Json.obj(
       "title" -> movie.title,
       "director" -> movie.director,
-      "actors" -> "yes boy im an actor",
+      "actors" -> movie.actors,
       "rating" -> movie.rating,
       "genre" -> movie.genre,
       "img" -> movie.img
@@ -102,6 +103,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       case Success(objectId) => Movie(objectId,
         (value \ "title").as[String],
         (value \ "director").as[String],
+        (value \ "actors").as[String],
         (value \ "rating").as[String],
         (value \ "genre").as[String],
         (value \ "img").as[String])
