@@ -19,6 +19,7 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     mc.list().map {
       result => Ok(views.html.index(result))
     }
+
   }
 
   def moviePage(id: BSONObjectID) = Action.async { // should take a movie? object id? as a parameter
@@ -29,7 +30,7 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
 
   def deleteMovie(id: BSONObjectID) = Action.async {
     mc.delete(id).map{ results =>
-      results match {
+     results match {
         case 1 => Ok(views.html.deleteSuccess())
         case 0 => Ok(views.html.deleteFail())
       }
