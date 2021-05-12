@@ -4,16 +4,12 @@ GET     /                           controllers.HomeController.index
 
 GET     /movie/:id                  controllers.HomeController.moviePage(id: reactivemongo.bson.BSONObjectID)
 
-GET     /CreatePage                 controllers.Create.CreatePage()
-
-POST    /Create                     controllers.Create.AddMovie()
+GET     /Create                     controllers.Create.AddMovie()
 
 GET     /delete/$id<[0-9]+>         controllers.HomeController.deleteMovie(id: Int)
 
-PUT     /update/:id                 controllers.HomeController.updateMovie(id: reactivemongo.bson.BSONObjectID)
+GET     /update/:id                 controllers.HomeController.updateMovie(id: reactivemongo.bson.BSONObjectID)
 
 GET     /search                     controllers.HomeController.search()
 
 GET     /test                       controllers.HomeController.testPrint()
-
-GET    /updatepage                      controllers.HomeController.updatePage()
