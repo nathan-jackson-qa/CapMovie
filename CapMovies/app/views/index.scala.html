@@ -8,45 +8,20 @@
             <p class="lead mb-4">Movie list</p>
         </div>
     </div>
-<form action="/filter">
-    <p>Filter By Genre</p>
-    <input type="radio" id="All" name="genre" value="All" checked="checked">
-    <label for="All">All</label>
-    <input type="radio" id="Action" name="genre" value="Action">
-    <label for="Action">Action</label>
-    <input type="radio" id="Drama" name="genre" value="Drama">
-    <label for="Drama">Drama</label>
-    <input type="radio" id="Crime" name="genre" value="Crime">
-    <label for="Crime">Crime</label>
-    <input type="radio" id="Fantasy" name="genre" value="Fantasy">
-    <label for="Fantasy">Fantasy</label>
-    <input type="radio" id="Thriller" name="genre" value="Thriller">
-    <label for="Thriller">Thriller</label>
-    <input type="radio" id="Animation" name="genre" value="Animation">
-    <label for="Animation">Animation</label>
-    <input type="submit" value="Filter">
-</form>
-    <div> <!-- movie list -->
 
-        <div class="card-deck m-2 mb-20 text-dark">
-            <div class="row">
-                @for(movie <- result) {
+    <div class="container"> <!-- movie list -->
+        <div class="row row-cols-3 row-cols-lg-5 g-3 g-lg-5">
+            @for(movie <- result) {
                 <div class="col">
-                    <div class="card text-center m-2" style="width: 20rem;">
-                        <a href="/movie/@movie._id.stringify">
-                            <img id="@movie.title poster" class="card-image-top" style="height: 40%; width: 40%;" src="@routes.Assets.versioned(movie.img)" alt="movie poster">
+                        <a href="/movie/@movie._id.stringify" style="text-decoration: none">
+                            <div class="card border-0 border-rounded mini-movie-poster" style="width: 12rem; background-color: #b1b4b6; color: white">
+                                <img id="@movie.title poster" class="text-center align-items-center justify-content-center card-img-top movie-poster border-0" style="height: 18rem; width: 12rem" src="@routes.Assets.versioned(movie.img)" alt="movie poster">
+                                 <h5 class="user-select-none text-center align-items-center justify-content-center p-1 m-0 border-rounded">@movie.title</h5>
+                            </div>
                         </a>
-                        <div class="card-body">
-                            <h5 class="card-title">@movie.title</h5>
-                        </div>
-                    </div>
                 </div>
-                }
-            </div>
+            }
         </div>
-
     </div>
-<script>
 
-</script>
 }
