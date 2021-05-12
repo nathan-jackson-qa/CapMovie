@@ -61,7 +61,12 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
 
   def update() = ???
 
-  def delete() = ???
+  def delete(id: BSONObjectID) = {
+    ws.url(backend+"/delete/"+id.stringify).withRequestTimeout(5000.millis).get().onComplete{
+      case Success(1) => 1
+      case Failure(error) => 0
+    }
+  }
 
   def search(searchTerm: String): Future[Seq[Movie]] = {
     var movies: Seq[Movie] = Seq.empty[Movie]
