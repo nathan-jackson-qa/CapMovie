@@ -32,10 +32,6 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     Ok(views.html.blank())
   }
 
-  def updatePage() = Action { implicit request =>
-    Ok(views.html.update(id: BSONObjectID,MovieForm.submitForm))
-  }
-
   def updateMovie(id: BSONObjectID) = Action { implicit request =>// should take a movie object id? as a parameter
 
     MovieForm.submitForm.bindFromRequest().fold( { formWithErrors =>
