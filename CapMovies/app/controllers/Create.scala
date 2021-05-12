@@ -9,10 +9,6 @@ import persistence.connector.MovieConnector
 @Singleton
 class Create @Inject()(cc: ControllerComponents, mc:MovieConnector) extends AbstractController(cc) with I18nSupport {
 
-  def CreatePage = Action { implicit request =>
-    Ok(views.html.createPage(MovieForm.submitForm))
-  }
-
   def AddMovie = Action { implicit request =>
     MovieForm.submitForm.bindFromRequest().fold({ formWithErrors =>
       BadRequest(views.html.createPage(formWithErrors))
