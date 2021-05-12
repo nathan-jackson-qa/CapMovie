@@ -127,7 +127,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
           case Success(objectId) => movies = movies :+ (Movie(objectId,
             (movie \ "title").as[String],
             (movie \ "director").as[String],
-            (movie \ "actor").as[String],
+            (movie \ "actors").as[String],
             (movie \ "rating").as[String],
             (movie \ "genre").as[String],
             (movie \ "img").as[String]))
