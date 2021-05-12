@@ -8,7 +8,24 @@
             <p class="lead mb-4">Movie list</p>
         </div>
     </div>
-
+<form action="/filter">
+    <p>Filter By Genre</p>
+    <input type="radio" id="All" name="genre" value="All">
+    <label for="All">All</label>
+    <input type="radio" id="Action" name="genre" value="Action">
+    <label for="Action">Action</label>
+    <input type="radio" id="Drama" name="genre" value="Drama">
+    <label for="Drama">Drama</label>
+    <input type="radio" id="Crime" name="genre" value="Crime">
+    <label for="Crime">Crime</label>
+    <input type="radio" id="Fantasy" name="genre" value="Fantasy">
+    <label for="Fantasy">Fantasy</label>
+    <input type="radio" id="Thriller" name="genre" value="Thriller">
+    <label for="Thriller">Thriller</label>
+    <input type="radio" id="Animation" name="genre" value="Animation">
+    <label for="Animation">Animation</label>
+    <input type="submit" value="Filter">
+</form>
     <div class="container"> <!-- movie list -->
         <div class="row row-cols-3 row-cols-lg-5 g-3 g-lg-5">
             @for(movie <- result) {

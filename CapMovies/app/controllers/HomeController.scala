@@ -53,6 +53,12 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     })
   }
 
+  def filter(genre: String) = Action async { implicit request =>
+    mc.filter(genre).map { movies =>
+      Ok(views.html.index(movies))
+    }
+  }
+
   def testPrint() = Action{ implicit request =>
     Ok(views.html.blank())
   }
