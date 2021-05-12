@@ -84,10 +84,12 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     }
   }
 
-  def delete(id: BSONObjectID) = {
-    ws.url(backend+"/delete/"+id.stringify).withRequestTimeout(5000.millis).get().onComplete{
-      case Success(1) => 1
-      case Failure(error) => 0
+  def delete(id: BSONObjectID): Future[Int] = {
+    ws.url(backend+"/delete/"+id.stringify).withRequestTimeout(5000.millis).delete().map{ response =>
+      response.status match{
+        case 200 => 1
+        case _ => 0
+      }
     }
   }
 
