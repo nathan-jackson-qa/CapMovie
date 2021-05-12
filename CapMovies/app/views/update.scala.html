@@ -9,7 +9,8 @@
         @helper.inputText(form("title"), Symbol("_label") -> ("Movie title:"))
         @helper.inputText(form("director"), Symbol("_label") -> ("Director name:"))
         @helper.inputText(form("rating"), Symbol("_label") -> ("Rating:"))
-        @helper.inputText(form("genre"), Symbol("_label") -> ("Genre:"))
+        @helper.inputRadioGroup(form("genre"), Seq("horror" -> "Horror", "action" -> "Action", "romance" -> "Romance", "sci-fi" -> "SCI-FI"))
+        @helper.inputText(form("img"), Symbol("_label") -> ("ImageURL:"))
         <button class="btn btn-primary" type="submit" id="submit">Update</button>
     </div>
     }

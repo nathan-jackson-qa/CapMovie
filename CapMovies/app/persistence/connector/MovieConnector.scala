@@ -52,8 +52,8 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     }
   }
 
-  def update(id: BSONObjectID): Future[Movie] = {
-    ws.url(backend+"/update/"+id.stringify).withRequestTimeout(5000.millis).get()map { response =>
+  def update(movie: Movie): Future[Movie] = {
+    ws.url(backend+"/update/"+ movie._id.stringify).withRequestTimeout(5000.millis).get()map { response =>
       val tryId = BSONObjectID.parse(((response.json \ "_id") \ "$oid").as[String])
       tryId match {
         case Success(objectId) =>Movie(objectId,
