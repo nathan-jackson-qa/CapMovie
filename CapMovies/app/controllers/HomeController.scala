@@ -29,7 +29,7 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
 
   def deleteMovie(id: Int) = Action {
     // Do delete functions here
-    Ok(views.html.index(""))
+    Ok(views.html.blank())
   }
 
   def updateMovie(id: BSONObjectID) = Action { implicit request =>// should take a movie object id? as a parameter
@@ -52,7 +52,7 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
   }
 
   def testPrint() = Action{ implicit request =>
-    Ok(views.html.index())
+    Ok(views.html.blank())
   }
 }
 
