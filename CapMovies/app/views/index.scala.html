@@ -8,7 +8,24 @@
             <p class="lead mb-4">Movie list</p>
         </div>
     </div>
-
+<form action="/filter">
+    <p>Filter By Genre</p>
+    <input type="radio" id="All" name="genre" value="All" checked="checked">
+    <label for="All">All</label>
+    <input type="radio" id="Action" name="genre" value="Action">
+    <label for="Action">Action</label>
+    <input type="radio" id="Drama" name="genre" value="Drama">
+    <label for="Drama">Drama</label>
+    <input type="radio" id="Crime" name="genre" value="Crime">
+    <label for="Crime">Crime</label>
+    <input type="radio" id="Fantasy" name="genre" value="Fantasy">
+    <label for="Fantasy">Fantasy</label>
+    <input type="radio" id="Thriller" name="genre" value="Thriller">
+    <label for="Thriller">Thriller</label>
+    <input type="radio" id="Animation" name="genre" value="Animation">
+    <label for="Animation">Animation</label>
+    <input type="submit" value="Filter">
+</form>
     <div> <!-- movie list -->
 
         <div class="card-deck m-2 mb-20 text-dark">
@@ -17,7 +34,7 @@
                 <div class="col">
                     <div class="card text-center m-2" style="width: 20rem;">
                         <a href="/movie/@movie._id.stringify">
-                            <img id="@movie.title poster" class="card-image-top" style="max-height: 30%; max-width: 80%;" src="@routes.Assets.versioned(movie.img)" alt="movie poster">
+                            <img id="@movie.title poster" class="card-image-top" style="height: 40%; width: 40%;" src="@routes.Assets.versioned(movie.img)" alt="movie poster">
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">@movie.title</h5>
@@ -29,4 +46,7 @@
         </div>
 
     </div>
+<script>
+
+</script>
 }

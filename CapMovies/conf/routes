@@ -16,3 +16,6 @@ GET     /search                     controllers.HomeController.search()
 
 GET     /test                       controllers.HomeController.testPrint()
 
+GET     /filter                     controllers.HomeController.filter(genre: String)
+
+
