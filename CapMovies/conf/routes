@@ -6,7 +6,7 @@ GET     /movie/:id                  controllers.HomeController.moviePage(id: rea
 
 GET     /Create                     controllers.Create.AddMovie()
 
-GET     /delete/$id<[0-9]+>         controllers.HomeController.deleteMovie(id: Int)
+GET     /delete/$id<[0-9]+>         controllers.HomeController.deleteMovie(id: reactivemongo.bson.BSONObjectID)
 
 GET     /update/:id                 controllers.HomeController.updateMovie(id: reactivemongo.bson.BSONObjectID)
 

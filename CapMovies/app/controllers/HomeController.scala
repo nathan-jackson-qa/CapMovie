@@ -27,9 +27,13 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     }
   }
 
-  def deleteMovie(id: Int) = Action {
-    // Do delete functions here
-    Ok(views.html.blank())
+  def deleteMovie(id: BSONObjectID) = Action.async {
+    mc.delete(id).map{ results =>
+      results match {
+        case 1 => Ok(views.html.deleteSuccess())
+        case 0 => Ok(views.html.deleteFail())
+      }
+    }
   }
 
   def updateMovie(id: BSONObjectID) = Action { implicit request =>// should take a movie object id? as a parameter
