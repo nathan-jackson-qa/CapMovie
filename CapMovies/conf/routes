@@ -10,9 +10,10 @@ POST    /Create                     controllers.Create.AddMovie()
 
 DELETE     /delete/$id<[0-9]+>         controllers.HomeController.deleteMovie(id: reactivemongo.bson.BSONObjectID)
 
-GET     /update/:id                 controllers.HomeController.updateMovie(id: reactivemongo.bson.BSONObjectID)
+PUT     /update/:id                 controllers.HomeController.updateMovie(id: reactivemongo.bson.BSONObjectID)
 
 GET     /search                     controllers.HomeController.search()
 
 GET     /test                       controllers.HomeController.testPrint()
 
+GET    /updatepage                      controllers.HomeController.updatePage()
