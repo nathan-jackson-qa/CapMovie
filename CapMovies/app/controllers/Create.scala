@@ -2,20 +2,19 @@ package controllers
 
 import javax.inject._
 import play.api.mvc._
+import play.api.i18n.I18nSupport
+import persistence.domain._
+import persistence.connector.MovieConnector
 
 @Singleton
-class Create @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class Create @Inject()(cc: ControllerComponents, mc:MovieConnector) extends AbstractController(cc) with I18nSupport {
 
-  def CreatePage = Action { implicit request=>
-    Ok(views.html.createPage())
-  }
-
-  def AddMovie = Action {
-    request => val postVals = request.body.asFormUrlEncoded
-      postVals.map{ args =>
-        val name = args("name").head
-        val description = args("description").head
-        Ok(s"The movie name: $name and description: $description")
-      }.getOrElse(Ok("Oops"))
+  def AddMovie = Action { implicit request =>
+    MovieForm.submitForm.bindFromRequest().fold({ formWithErrors =>
+      BadRequest(views.html.createPage(formWithErrors))
+    }, { movie =>
+      mc.create(movie)
+      Redirect("/")
+    })
   }
 }

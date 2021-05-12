@@ -4,14 +4,14 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import persistence.domain.Movie
+import persistence.domain.MovieTemp
 import javax.inject.Inject
-
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import play.api.mvc._
 import play.api.libs.ws._
 import play.api.http.HttpEntity
-import play.api.libs.json.JsArray
+import play.api.libs.json._
 import akka.actor.ActorSystem
 import akka.stream.scaladsl._
 import akka.util.ByteString
@@ -31,7 +31,17 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     }
   }
 
-  def create = ???
+  def create(movie: MovieTemp) = {
+    val newMov = Json.obj(
+      "title" -> movie.title,
+      "director" -> movie.director,
+      "actors" -> "yes boy im an actor",
+      "rating" -> movie.rating,
+      "genre" -> movie.genre,
+      "img" -> movie.img
+    )
+    val FutureResponse: Future[WSResponse] = ws.url(backend+"/create").post(newMov)
+  }
 
   def read(id: BSONObjectID): Future[Movie] = {
     ws.url(backend+"/read/"+id.stringify).withRequestTimeout(5000.millis).get().map { response =>
@@ -59,7 +69,17 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     }
   }
 
-  def update() = ???
+  def update(movie: Movie) = {
+    val newMov = Json.obj(
+      "title" -> movie.title,
+      "director" -> movie.director,
+      "actors" -> "yes boy im an actor",
+      "rating" -> movie.rating,
+      "genre" -> movie.genre,
+      "img" -> movie.img
+    )
+      ws.url(backend+"/update/"+ movie._id.stringify).withRequestTimeout(5000.millis).put(newMov)
+    }
 
   def delete() = ???
 

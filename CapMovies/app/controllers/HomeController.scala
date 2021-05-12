@@ -9,6 +9,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 import reactivemongo.bson.BSONObjectID
+import scala.concurrent.ExecutionContext.Implicits.global
 
 
 @Singleton
@@ -34,8 +35,10 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
   def updateMovie(id: BSONObjectID) = Action { implicit request =>// should take a movie object id? as a parameter
 
     MovieForm.submitForm.bindFromRequest().fold( { formWithErrors =>
-      BadRequest(views.html.update(id, MovieForm.submitForm.fill(MovieTemp("Nemo", "human", "18", "Horror", "scary.jpg"))))
+      BadRequest(views.html.update(id, MovieForm.submitForm.fill(MovieTemp("N/A", "N/A", "N/A", "N/A", "N/A"))))
     }, { updatedMovie =>
+      val newMov = Movie (id,updatedMovie.title,updatedMovie.director,updatedMovie.rating,updatedMovie.genre,updatedMovie.img)
+      mc.update(newMov)
       Redirect("/movie/"+id.stringify)
     })
   }

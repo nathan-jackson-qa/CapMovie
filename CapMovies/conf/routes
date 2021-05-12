@@ -4,9 +4,7 @@ GET     /                           controllers.HomeController.index
 
 GET     /movie/:id                  controllers.HomeController.moviePage(id: reactivemongo.bson.BSONObjectID)
 
-GET     /CreatePage                 controllers.Create.CreatePage()
-
-POST    /Create                     controllers.Create.AddMovie()
+GET     /Create                     controllers.Create.AddMovie()
 
 GET     /delete/$id<[0-9]+>         controllers.HomeController.deleteMovie(id: Int)
 
@@ -17,5 +15,4 @@ GET     /search                     controllers.HomeController.search()
 GET     /test                       controllers.HomeController.testPrint()
 
 GET     /filter                     controllers.HomeController.filter(genre: String)
-
 
