@@ -1,4 +1,5 @@
-@(movies: Seq[Movie])
+@import persistence.domain.{Movie}
+@(result: Seq[Movie])
 
 @main() {
     <div class="px-4 pt-5 my-5 text-center border-bottom">
@@ -8,9 +9,19 @@
         </div>
     </div>
 
-    <div> <!-- movie list -->
-        @for(movie <- movies) {
-        <h5>@movie.title</h5>
-        }
+    <div class="container"> <!-- movie list -->
+        <div class="row row-cols-3 row-cols-lg-5 g-3 g-lg-5">
+            @for(movie <- result) {
+                <div class="col">
+                        <a href="/movie/@movie._id.stringify" style="text-decoration: none">
+                            <div class="card border-0 border-rounded mini-movie-poster" style="width: 12rem; background-color: #b1b4b6; color: white">
+                                <img id="@movie.title poster" class="text-center align-items-center justify-content-center card-img-top movie-poster border-0" style="height: 18rem; width: 12rem" src="@routes.Assets.versioned(movie.img)" alt="movie poster">
+                                 <h5 class="user-select-none text-center align-items-center justify-content-center p-1 m-0 border-rounded">@movie.title</h5>
+                            </div>
+                        </a>
+                </div>
+            }
+        </div>
     </div>
+
 }
