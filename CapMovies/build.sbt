@@ -27,6 +27,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json-joda" % "2.7.4"
 )
 
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
+unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/CapMovies.test" )
 
 RoutesKeys.routesImport += "play.modules.reactivemongo.PathBindables._"
