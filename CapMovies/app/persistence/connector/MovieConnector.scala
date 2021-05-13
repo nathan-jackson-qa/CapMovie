@@ -25,12 +25,6 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
 
   val backend = "http://localhost:9001"
 
-  def test(): Future[String] = {
-    ws.url(backend+"/read/60992b3a946c653550889f5c").withRequestTimeout(5000.millis).get().map { response =>
-      ((response.json \ "_id") \ "$oid").as[String]
-    }
-  }
-
   def create(movie: MovieTemp) = {
     val newMov = Json.obj(
       "title" -> movie.title,
