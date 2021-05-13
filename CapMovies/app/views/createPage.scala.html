@@ -2,15 +2,24 @@
 @import persistence.domain.{Movie, MovieTemp, MovieForm}
 @(form: Form[MovieTemp])(implicit messages: Messages)
 @main(){
+</br>
 @helper.form(routes.Create.AddMovie()) {
-<div class="form-floating text-center">
-    @helper.inputText(form("title"), Symbol("_label") -> ("Movie title:"))
-    @helper.inputText(form("director"), Symbol("_label") -> ("Director name:"))
-    @helper.inputText(form("actors"), Symbol("_label") -> ("Actors:"))
-    @helper.inputRadioGroup(form("rating"), Seq("U" -> "U", "PG" -> "PG", "12A" -> "12A", "15" -> "15", "158" -> "18"))
-    @helper.inputRadioGroup(form("genre"), Seq("Drama" -> "Drama", "Crime" -> "Crime", "Fantasy" -> "Fantasy", "Thriller" -> "Thriller", "Horror" -> "Horror", "Action" -> "Action", "Romance" -> "Romance", "Sci-fi" -> "SCI-FI"))
-    @helper.inputText(form("img"), Symbol("_label") -> ("ImageURL:"))
-    <button class="btn btn-primary" type="submit" id="submit">Update</button>
-</div>
+    <div class="card mb-5 border-1 border-light" style="background-color: #ffffff; color: #0b0c0c">
+        <div class="container">
+            <div class="row">
+                <div class="card-body p-0">
+                    <div class="col">
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputText(form("title"), '_label -> "Movie title:") </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputText(form("director"), '_label -> "Director name:") </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputText(form("actors"), '_label -> "Actors:") </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputRadioGroup(form("rating"), Seq("U" -> "U", "PG" -> "PG", "12A" -> "12A", "15" -> "15", "158" -> "18"), '_label -> "Rating:") </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputRadioGroup(form("genre"), Seq("Drama" -> "Drama", "Crime" -> "Crime", "Fantasy" -> "Fantasy", "Thriller" -> "Thriller", "Horror" -> "Horror", "Action" -> "Action", "Romance" -> "Romance", "Sci-fi" -> "SCI-FI"), '_label -> "Genre:") </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputText(form("img"), '_label -> ("ImageURL:")) </h8></div>
+                        <button class="btn btn-primary" type="submit" id="submit">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 }
