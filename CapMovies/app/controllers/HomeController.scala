@@ -31,8 +31,8 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
   def deleteMovie(id: BSONObjectID) = Action.async {
     mc.delete(id).map{ results =>
      results match {
-        case 1 => Ok(views.html.deleteSuccess())
-        case 0 => Ok(views.html.deleteFail())
+        case 1 => Ok(views.html.delete("SUCCESS"))
+        case 0 => Ok(views.html.delete("FAIL"))
       }
     }
   }
