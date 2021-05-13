@@ -8,24 +8,41 @@
             <p class="lead mb-4">Movie list</p>
         </div>
     </div>
-<form action="/filter">
-    <p>Filter By Genre</p>
-    <input type="radio" id="All" name="genre" value="All">
-    <label for="All">All</label>
-    <input type="radio" id="Action" name="genre" value="Action">
-    <label for="Action">Action</label>
-    <input type="radio" id="Drama" name="genre" value="Drama">
-    <label for="Drama">Drama</label>
-    <input type="radio" id="Crime" name="genre" value="Crime">
-    <label for="Crime">Crime</label>
-    <input type="radio" id="Fantasy" name="genre" value="Fantasy">
-    <label for="Fantasy">Fantasy</label>
-    <input type="radio" id="Thriller" name="genre" value="Thriller">
-    <label for="Thriller">Thriller</label>
-    <input type="radio" id="Animation" name="genre" value="Animation">
-    <label for="Animation">Animation</label>
-    <input type="submit" value="Filter">
-</form>
+
+    <div class="row text-center">
+        <form action="/filter">
+            <p>Filter By Genre</p>
+            <input type="radio" id="All" class="btn-check" style="background-color: #8e95d3" name="genre" value="All">
+            <label class="btn btn-outline-primary" for="All">All</label>
+
+            <input type="radio" id="Action" class="btn-check" style="background-color: #8e95d3" name="genre" value="Action">
+            <label class="btn btn-outline-primary" for="Action">Action</label>
+
+            <input type="radio" id="Drama" class="btn-check" style="background-color: #8e95d3" name="genre" value="Drama">
+            <label class="btn btn-outline-primary" for="Drama">Drama</label>
+
+            <input type="radio" id="Crime" class="btn-check" style="background-color: #8e95d3" name="genre" value="Crime">
+            <label class="btn btn-outline-primary" for="Crime">Crime</label>
+
+            <input type="radio" id="Fantasy" class="btn-check" style="background-color: #8e95d3" name="genre" value="Fantasy">
+            <label class="btn btn-outline-primary" for="Fantasy">Fantasy</label>
+
+            <input type="radio" id="Thriller" class="btn-check" style="background-color: #8e95d3" name="genre" value="Thriller">
+            <label class="btn btn-outline-primary" for="Thriller">Thriller</label>
+
+            <input type="radio" id="Animation" class="btn-check" style="background-color: #8e95d3" name="genre" value="Animation">
+            <label class="btn btn-outline-primary" for="Animation">Animation</label>
+
+            <br>
+            <br>
+
+            <input type="submit" value="Filter" class="btn btn-outline-primary">
+        </form>
+    </div>
+
+    <br>
+    <br>
+
     <div class="container"> <!-- movie list -->
         <div class="row row-cols-3 row-cols-lg-5 g-3 g-lg-5">
             @for(movie <- result) {
