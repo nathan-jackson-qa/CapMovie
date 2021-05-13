@@ -8,7 +8,7 @@
     @helper.inputText(form("director"), Symbol("_label") -> ("Director name:"))
     @helper.inputText(form("actors"), Symbol("_label") -> ("Actors:"))
     @helper.inputRadioGroup(form("rating"), Seq("U" -> "U", "PG" -> "PG", "12A" -> "12A", "15" -> "15", "158" -> "18"))
-    @helper.inputRadioGroup(form("genre"), Seq("horror" -> "Horror", "action" -> "Action", "romance" -> "Romance", "sci-fi" -> "SCI-FI"))
+    @helper.inputRadioGroup(form("genre"), Seq("Drama" -> "Drama", "Crime" -> "Crime", "Fantasy" -> "Fantasy", "Thriller" -> "Thriller", "Horror" -> "Horror", "Action" -> "Action", "Romance" -> "Romance", "Sci-fi" -> "SCI-FI"))
     @helper.inputText(form("img"), Symbol("_label") -> ("ImageURL:"))
     <button class="btn btn-primary" type="submit" id="submit">Update</button>
 </div>
