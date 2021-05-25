@@ -42,6 +42,14 @@ class MovieConnectorTest extends AsyncAbstractTest {
       }
     }
   }
+  val mc2 = new MovieConnector(ws, cc, ec){
+    override def wsget(url: String): Future[WSResponse] = Future {
+      new TestResponse() {
+        override def json = Json.parse("""{"_id":{"$oid":"609a678ce1a52451685d793f"},"title":"Gladiator","director":"Ridley Scott","actors":"Russell Crowe","rating":"R","genre":"Action","img":"images/posters/gladiator.jpg"}""")
+      }
+    }
+
+  }
 
   class TestResponse extends WSResponse {
     override def status: Int = ???
@@ -97,18 +105,18 @@ class MovieConnectorTest extends AsyncAbstractTest {
       }
     }
 
-//    "read a movie" should {
-//      "return an individual movie" in {
-//        val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
-//        tryId match {
-//          case Success(value) =>
-//            mc.read(value).map { response =>
-//              assert(response.equals(Seq(Movie(value, "Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg"))))
-//            }
-//          case Failure(exception) => assert(false)
-//        }
-//      }
-//    }
+    "read a movie" should {
+      "return an individual movie" in {
+        val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
+        tryId match {
+          case Success(value) =>
+            mc2.read(value).map { response =>
+              assert(response.equals(Seq(Movie(value, "Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg"))))
+            }
+          case Failure(exception) => assert(false)
+        }
+      }
+    }
 
     "search for a term" should {
       "return a list of movies matching the term" in {
