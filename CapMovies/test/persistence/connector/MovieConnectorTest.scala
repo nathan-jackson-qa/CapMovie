@@ -83,6 +83,10 @@ class MovieConnectorTest extends AbstractTest {
 
       }
     }
+
+    "create a movie" should {
+      "return "
+    }
   }
 
 
