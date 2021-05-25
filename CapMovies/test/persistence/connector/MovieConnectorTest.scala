@@ -92,7 +92,7 @@ class MovieConnectorTest extends AsyncAbstractTest {
     "create a movie" should {
       "return a " in {
         mc.create(MovieTemp("Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg")).map { response =>
-          assert(response.status.equals(201))
+          assert(response.equals(true))
         }
       }
     }

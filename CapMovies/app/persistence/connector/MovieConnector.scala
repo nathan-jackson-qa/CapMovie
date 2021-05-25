@@ -42,7 +42,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       "genre" -> movie.genre,
       "img" -> movie.img
     )
-    wspost("/create", newMov)
+    wspost("/create", newMov).map(_ => true).recover{case _ => false}
   }
 
   def read(id: BSONObjectID): Future[Movie] = {
