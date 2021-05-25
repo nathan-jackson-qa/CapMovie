@@ -1,7 +1,6 @@
 package persistence.connector
 
 import akka.stream.scaladsl.Source
-import akka.stream.testkit.NoMaterializer.executionContext
 import akka.util.ByteString
 import persistence.connector.MovieConnector
 import play.api.libs.ws._
@@ -17,6 +16,7 @@ import test.{AbstractTest, AsyncAbstractTest}
 
 import java.io.File
 import java.net.URI
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
@@ -41,18 +41,12 @@ class MovieConnectorTest extends AbstractTest {
         }
       }
 
-      override def wspost(url: String, jsObject: JsObject): Future[TestResponse] = Future {
-        new TestResponse() {
-          override def status: Int = if (succeed) 201 else 400
-        }
+      override def wspost(url: String, jsObject: JsObject): Future[TestResponse] = {
+        if (succeed) Future.successful(new TestResponse()) else Future.failed(new RuntimeException)
       }
 
       override def wsput(url: String, jsObject: JsObject): Future[WSResponse] = {
-        if (succeed) {
-          Future.successful( new TestResponse())
-        } else  {
-          Future.failed(new RuntimeException)
-        }
+        if (succeed) Future.successful(new TestResponse()) else Future.failed(new RuntimeException)
       }
     }
   }
@@ -106,17 +100,13 @@ class MovieConnectorTest extends AbstractTest {
 
     "create a movie" should {
       "return a 201" in new Setup() {
-        await(mc.create(movieTemp1)).status shouldBe 201
+        await(mc.create(movieTemp1)) shouldBe true
       }
 
       "return a 400" in new Setup(false) {
-        await(mc.create(movieTemp1)).status shouldBe 400
-      "return a " in {
-        mc.create(MovieTemp("Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg")).map { response =>
-          assert(response.equals(true))
+        await(mc.create(movieTemp1)) shouldBe false
         }
       }
-    }
 
     "read a movie" should {
       "return an individual movie" in {
@@ -132,7 +122,7 @@ class MovieConnectorTest extends AbstractTest {
     }
 
     "search for a term" should {
-      "return a list of movies matching the term" in {
+      "return a list of movies matching the term" in new Setup(){
         val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
         tryId match {
           case Success(value) =>
@@ -144,7 +134,7 @@ class MovieConnectorTest extends AbstractTest {
       }
     }
     "filter by a genre" should {
-      "give a list of movies matching that genre" in {
+      "give a list of movies matching that genre" in new Setup() {
         val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
         tryId match {
           case Success(value) =>
