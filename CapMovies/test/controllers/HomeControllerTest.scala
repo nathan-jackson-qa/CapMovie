@@ -1,11 +1,14 @@
 package controllers
 
+import akka.stream.scaladsl.Source
 import akka.stream.testkit.NoMaterializer.executionContext
+import akka.util.ByteString
 import controllers.HomeController
-import play.api.libs.json.Json
+import org.mockito.ArgumentMatchers.any
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Result, Results}
 import play.api.test.{FakeRequest, Helpers}
-import play.api.test.Helpers.{POST, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers.{POST, contentAsString, defaultAwaitTimeout, redirectLocation}
 import play.api.libs.ws._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
@@ -14,10 +17,14 @@ import org.scalatest.wordspec.{AnyWordSpec, AsyncWordSpec}
 
 import scala.concurrent.{Await, Future}
 import persistence.connector.MovieConnector
+import persistence.domain.Movie
+import reactivemongo.bson.BSONObjectID
 import test.AsyncAbstractTest
 
+import java.net.URI
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
+import scala.xml.Elem
 
 
 class HomeControllerTest extends AsyncAbstractTest {
@@ -37,5 +44,19 @@ class HomeControllerTest extends AsyncAbstractTest {
       }
     }
   }
+
+  "HomeController" can {
+    "UpdateMovie" should {
+      "update the movie object" in {
+        when(mc.update(any())) thenReturn Future.successful(true)
+
+        val result: Future[Result] = controller.updateMovie(BSONObjectID.parse("609a678ce1a52451685d793f").get).apply(FakeRequest().withFormUrlEncodedBody("title"-> "gg", "director" -> "gg", "actors" -> "gg", "rating" -> "gg", "genre" -> "gg", "img" -> "gg.jpg"))
+        result.map{
+          x => assert(x.header.status.equals(303))
+        }
+      }
+    }
+  }
+
 
 }

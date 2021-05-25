@@ -65,7 +65,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       "genre" -> movie.genre,
       "img" -> movie.img
     )
-      ws.url(backend+"/update/"+ movie._id.stringify).withRequestTimeout(5000.millis).put(newMov)
+      ws.url(backend+"/update/"+ movie._id.stringify).withRequestTimeout(5000.millis).put(newMov).map(_ => true).recover{case _ => false}
     }
 
   def delete(id: BSONObjectID) = {
