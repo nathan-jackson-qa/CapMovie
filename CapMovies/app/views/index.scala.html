@@ -1,14 +1,70 @@
-@()
+@import persistence.domain.{Movie}
+@(result: Seq[Movie])
 
 @main() {
     <div class="px-4 pt-5 my-5 text-center border-bottom">
         <h1 class="display-4 fw-bold">Welcome to CapMovies</h1>
         <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-                <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Primary button</button>
-                <button type="button" class="btn btn-outline-secondary btn-lg px-4">Secondary</button>
-            </div>
+            <p class="lead mb-4">Movie list</p>
         </div>
     </div>
+
+    <div class="row text-center">
+        <form action="/filter">
+            <p>Filter By Genre</p>
+            <input type="radio" id="All" class="btn-check" style="background-color: #8e95d3" name="genre" value="All">
+            <label class="btn btn-outline-primary" for="All">All</label>
+
+            <input type="radio" id="Action" class="btn-check" style="background-color: #8e95d3" name="genre" value="Action">
+            <label class="btn btn-outline-primary" for="Action">Action</label>
+
+            <input type="radio" id="Drama" class="btn-check" style="background-color: #8e95d3" name="genre" value="Drama">
+            <label class="btn btn-outline-primary" for="Drama">Drama</label>
+
+            <input type="radio" id="Crime" class="btn-check" style="background-color: #8e95d3" name="genre" value="Crime">
+            <label class="btn btn-outline-primary" for="Crime">Crime</label>
+
+            <input type="radio" id="Fantasy" class="btn-check" style="background-color: #8e95d3" name="genre" value="Fantasy">
+            <label class="btn btn-outline-primary" for="Fantasy">Fantasy</label>
+
+            <input type="radio" id="Thriller" class="btn-check" style="background-color: #8e95d3" name="genre" value="Thriller">
+            <label class="btn btn-outline-primary" for="Thriller">Thriller</label>
+
+            <input type="radio" id="Animation" class="btn-check" style="background-color: #8e95d3" name="genre" value="Animation">
+            <label class="btn btn-outline-primary" for="Animation">Animation</label>
+          
+            <input type="radio" id="Horror" class="btn-check" style="background-color: #8e95d3" name="genre" value="Horror">
+            <label class="btn btn-outline-primary" for="Horror">Horror</label>
+          
+            <input type="radio" id="Romance" class="btn-check" style="background-color: #8e95d3" name="genre" value="Romance">
+            <label class="btn btn-outline-primary" for="Romance">Romance</label>
+          
+            <input type="radio" id="Sci-fi" class="btn-check" style="background-color: #8e95d3" name="genre" value="Sci-fi">
+            <label class="btn btn-outline-primary" for="Sci-fi">Sci-fi</label>
+
+            <br>
+            <br>
+
+            <input type="submit" value="Filter" style="background-color: #1d70b8; color: #ffffff " class="btn btn-outline-primary">
+        </form>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="container"> <!-- movie list -->
+        <div class="row row-cols-3 row-cols-lg-5 g-3 g-lg-5">
+            @for(movie <- result) {
+                <div class="col">
+                        <a href="/movie/@movie._id.stringify" style="text-decoration: none">
+                            <div class="card border-0 border-rounded mini-movie-poster" style="width: 12rem; background-color: #b1b4b6; color: white">
+                                <img id="@movie.title poster" class="text-center align-items-center justify-content-center card-img-top movie-poster border-0" style="height: 18rem; width: 12rem" src="@routes.Assets.versioned(movie.img)" alt="movie poster">
+                                 <h5 class="user-select-none text-center align-items-center justify-content-center p-1 m-0 border-rounded">@movie.title</h5>
+                            </div>
+                        </a>
+                </div>
+            }
+        </div>
+    </div>
+
 }

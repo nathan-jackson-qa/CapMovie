@@ -1,0 +1,29 @@
+@import views.html.helper.form
+@import persistence.domain.{Movie, MovieTemp, MovieForm}
+@import reactivemongo.bson.BSONObjectID
+@(id: BSONObjectID, form: Form[MovieTemp])(implicit messages: Messages)
+
+@main() {
+</br>
+
+    @helper.form(routes.HomeController.updateMovie(id)) {
+    <div class="card mb-5 border-1 border-light" style="background-color: #ffffff; color: #0b0c0c">
+        <div class="container">
+            <div class="row">
+                <div class="card-body p-0">
+                    <div class="col">
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputText(form("title"), '_label -> "Movie title:", '_showConstraints -> false) </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputText(form("director"), '_label -> "Director name:", '_showConstraints -> false) </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputText(form("actors"), '_label -> "Actors:", '_showConstraints -> false) </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputRadioGroup(form("rating"), Seq("U" -> "U", "PG" -> "PG", "12A" -> "12A", "15" -> "15", "158" -> "18"), '_label -> "Rating:", '_showConstraints -> false) </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputRadioGroup(form("genre"), Seq("Drama" -> "Drama", "Crime" -> "Crime", "Fantasy" -> "Fantasy", "Thriller" -> "Thriller", "Horror" -> "Horror", "Action" -> "Action", "Romance" -> "Romance", "Sci-fi" -> "SCI-FI"),'_label -> "Genre:", '_showConstraints -> false) </h8></div>
+                        <div class="row m-0 p-0"><h8 class="card-text p-2 pt-1" style="color: #505a5f"> @helper.inputText(form("img"), '_label -> "ImageURL:", '_showConstraints -> false) </h8></div>
+                        <button class="btn btn-primary" type="submit" id="submit">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+}
+
