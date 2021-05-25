@@ -46,11 +46,11 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       "genre" -> movie.genre,
       "img" -> movie.img
     )
-    wspost("/create", newMov)
+    wspost("/create", newMov).map(_ => true).recover{case _ => false}
   }
 
   def read(id: BSONObjectID): Future[Movie] = {
-    ws.url(backend+"/read/"+id.stringify).withRequestTimeout(5000.millis).get().map { response =>
+    wsget("/read/"+id.stringify).map { response =>
       jsValueToMovie(response.json).get
     }
   }
@@ -82,7 +82,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
   }
 
   def search(searchTerm: String): Future[Seq[Movie]] = {
-    ws.url(backend+"/search/"+searchTerm).withRequestTimeout(5000.millis).get().map { response =>
+    wsget("/search/"+searchTerm).map { response =>
       response.json.as[JsArray].value.flatMap(jsValueToMovie).toSeq
     }
   }
@@ -109,22 +109,6 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
   }
 
   def filterGenre(genre: String): Future[Seq[Movie]] = {
-    var movies: Seq[Movie] = Seq.empty[Movie]
-    ws.url(backend+"/filter/"+genre).withRequestTimeout(5000.millis).get().map { response =>
-      for (movie <- response.json.as[JsArray].value) {
-        val tryId = BSONObjectID.parse(((movie \ "_id") \ "$oid").as[String])
-        tryId match {
-          case Success(objectId) => movies = movies :+ (Movie(objectId,
-            (movie \ "title").as[String],
-            (movie \ "director").as[String],
-            (movie \ "actors").as[String],
-            (movie \ "rating").as[String],
-            (movie \ "genre").as[String],
-            (movie \ "img").as[String]))
-          case Failure(_) =>
-        }
-      }
-      movies
-    }
+    wsget("/filter/"+genre).map(_.json.as[JsArray].value.flatMap(jsValueToMovie).toSeq)
   }
 }
