@@ -21,7 +21,7 @@ import play.api.libs.json._
 import reactivemongo.bson.{BSONDocument, BSONObjectID}
 
 
-class MovieConnector @Inject()(ws: WSClient, val controllerComponents: ControllerComponents, val ec: ExecutionContext) extends BaseController  {
+class MovieConnector @Inject()(ws: WSClient, val controllerComponents: ControllerComponents, val ec: ExecutionContext) extends BaseController with Connector  {
 
   val backend = "http://localhost:9001"
 
@@ -31,6 +31,10 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
 
   def wspost(url: String, jsObject: JsObject): Future[WSResponse] = {
     ws.url(backend+url).post(jsObject)
+  }
+
+  def wsput(url: String, jsObject: JsObject): Future[WSResponse] = {
+    ws.url(backend+url).put(jsObject)
   }
 
   def create(movie: MovieTemp) = {
@@ -65,7 +69,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       "genre" -> movie.genre,
       "img" -> movie.img
     )
-      ws.url(backend+"/update/"+ movie._id.stringify).withRequestTimeout(5000.millis).put(newMov).map(_ => true).recover{case _ => false}
+      wsput("/create", newMov).map(_ => true).recover{case _ => false}
     }
 
   def delete(id: BSONObjectID) = {

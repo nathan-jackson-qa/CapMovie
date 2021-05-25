@@ -1,14 +1,13 @@
 package persistence.connector
 
 import akka.stream.scaladsl.Source
-import akka.stream.testkit.NoMaterializer.executionContext
 import akka.util.ByteString
 import persistence.connector.MovieConnector
 import play.api.libs.ws._
 import org.mockito.Mockito._
 import persistence.domain.{Movie, MovieTemp}
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{Await, ExecutionContext, Future}
 import play.api.mvc.{ControllerComponents, MultipartFormData}
 import play.api.libs.json._
 import play.libs.ws.WSBody
@@ -17,25 +16,43 @@ import test.{AbstractTest, AsyncAbstractTest}
 
 import java.io.File
 import java.net.URI
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 import scala.xml.Elem
 
-class MovieConnectorTest extends AsyncAbstractTest {
+class MovieConnectorTest extends AbstractTest {
   val backend = "http://localhost:9001"
 
 
   val ws = mock(classOf[WSClient])
   val cc = mock(classOf[ControllerComponents])
   val ec = mock(classOf[ExecutionContext])
-  val mc = new MovieConnector(ws, cc, ec){
-    override def wsget(url: String): Future[WSResponse] = Future {
-      new TestResponse()
-    }
 
-    override def wspost(url: String, jsObject: JsObject): Future[TestResponseCreate] = Future {
-      new TestResponseCreate
+  val movie1 = Movie(BSONObjectID.parse("609a678ce1a52451685d793f").get, "Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg")
+  val movieTemp1 = MovieTemp("Gladiator", "Ridley Scott", "Russel Crowe", "R", "Action", "images/posters/gladiator.jpg")
+
+  class Setup(succeed: Boolean = true) {
+    val mc = new MovieConnector(ws, cc, ec) {
+      override def wsget(url: String): Future[WSResponse] = Future {
+
+        new TestResponse()
+      }
+
+      override def wspost(url: String, jsObject: JsObject): Future[TestResponse] = Future {
+        new TestResponse() {
+          override def status: Int = if (succeed) 201 else 400
+        }
+      }
+
+      override def wsput(url: String, jsObject: JsObject): Future[WSResponse] = {
+        if (succeed) {
+          Future.successful( new TestResponse())
+        } else  {
+          Future.failed(new RuntimeException)
+        }
+      }
     }
   }
 
@@ -100,30 +117,33 @@ class MovieConnectorTest extends AsyncAbstractTest {
 //   ws.url(backend+"/list").withRequestTimeout(5000.millis).get().map { response =>
 //   [{"_id":{"$oid":"609a678ce1a52451685d793f"},"title":"Gladiator","director":"Ridley Scott","actors":"Russell Crowe","rating":"R","genre":"Action","img":"images/posters/gladiator.jpg"}]
 
+  def await[T](arg: Future[T]): T = Await.result(arg, Duration.Inf)
+
   "MovieConnector" can {
     "read a list of movies" should {
-      "return a list of movie objects" in {
-        val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
-        tryId match {
-          case Success(value) => {
-            mc.list().map { response =>
-              assert(response.equals(Seq(Movie(value, "Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg"))))
-            }
-          }
-          case Failure(exception) => assert(false)
-        }
-
+      "return a list of movie objects" in new Setup() {
+        await(mc.list()) shouldBe Seq(movie1)
       }
     }
 
     "create a movie" should {
-      "return a " in {
-        mc.create(MovieTemp("Gladiator", "Ridley Scott", "Russel Crowe", "R", "Action", "images/posters/gladiator.jpg")).map { response =>
-          assert(response.status.equals(201))
-        }
+      "return a 201" in new Setup() {
+        await(mc.create(movieTemp1)).status shouldBe 201
+      }
+
+      "return a 400" in new Setup(false) {
+        await(mc.create(movieTemp1)).status shouldBe 400
+      }
+    }
+
+    "update a movie" should {
+      "return true" in new Setup() {
+        await(mc.update(movie1)) shouldBe true
+      }
+
+      "return false" in new Setup(false) {
+        await(mc.update(movie1)) shouldBe false
       }
     }
   }
-
-
 }
