@@ -38,7 +38,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       "genre" -> movie.genre,
       "img" -> movie.img
     )
-    val FutureResponse: Future[WSResponse] = ws.url(backend+"/create").post(newMov)
+    ws.url(backend+"/create").withRequestTimeout(5000.millis).post(newMov).map(_ => true).recover{case _ => false}
   }
 
   def read(id: BSONObjectID): Future[Movie] = {

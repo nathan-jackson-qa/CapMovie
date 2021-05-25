@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.i18n.I18nSupport
 import persistence.domain._
 import persistence.connector.MovieConnector
+import views._
 
 @Singleton
 class Create @Inject()(cc: ControllerComponents, mc:MovieConnector) extends AbstractController(cc) with I18nSupport {
