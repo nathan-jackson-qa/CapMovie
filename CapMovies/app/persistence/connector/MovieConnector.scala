@@ -52,6 +52,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
   }
 
   def list(): Future[Seq[Movie]] = {
+    var movies: Seq[Movie] = Seq.empty[Movie]
     wsget("/list").map(_.json.as[JsArray].value.flatMap(jsValueToMovie).toSeq)
   }
 
@@ -64,8 +65,8 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       "genre" -> movie.genre,
       "img" -> movie.img
     )
-    ws.url(backend+"/update/"+ movie._id.stringify).withRequestTimeout(5000.millis).put(newMov).map(_ => true)
-  }
+      ws.url(backend+"/update/"+ movie._id.stringify).withRequestTimeout(5000.millis).put(newMov).map(_ => true).recover{case _ => false}
+    }
 
   def delete(id: BSONObjectID) = {
     ws.url(backend+"/delete/"+ id.stringify).withRequestTimeout(5000.millis).delete() map{
