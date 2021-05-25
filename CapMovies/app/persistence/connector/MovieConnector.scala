@@ -29,6 +29,10 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     ws.url(backend+url).withRequestTimeout(5000.millis).get()
   }
 
+  def wspost(url: String, jsObject: JsObject): Future[WSResponse] = {
+    ws.url(backend+url).post(jsObject)
+  }
+
   def create(movie: MovieTemp) = {
     val newMov = Json.obj(
       "title" -> movie.title,
@@ -38,7 +42,9 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       "genre" -> movie.genre,
       "img" -> movie.img
     )
+
     ws.url(backend+"/create").withRequestTimeout(5000.millis).post(newMov).map(_ => true).recover{case _ => false}
+    wspost("/create", newMov)
   }
 
   def read(id: BSONObjectID): Future[Movie] = {
@@ -61,7 +67,7 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
       "genre" -> movie.genre,
       "img" -> movie.img
     )
-      ws.url(backend+"/update/"+ movie._id.stringify).withRequestTimeout(5000.millis).put(newMov)
+      ws.url(backend+"/update/"+ movie._id.stringify).withRequestTimeout(5000.millis).put(newMov).map(_ => true).recover{case _ => false}
     }
 
   def delete(id: BSONObjectID) = {
