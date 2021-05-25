@@ -19,7 +19,6 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     mc.list().map {
       result => Ok(views.html.index(result))
     }
-
   }
 
   def moviePage(id: BSONObjectID) = Action.async { // should take a movie? object id? as a parameter

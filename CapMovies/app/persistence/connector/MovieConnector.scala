@@ -25,6 +25,10 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
 
   val backend = "http://localhost:9001"
 
+  def wsget(url: String): Future[WSResponse] = {
+    ws.url(backend+url).withRequestTimeout(5000.millis).get()
+  }
+
   def create(movie: MovieTemp) = {
     val newMov = Json.obj(
       "title" -> movie.title,
@@ -39,14 +43,13 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
 
   def read(id: BSONObjectID): Future[Movie] = {
     ws.url(backend+"/read/"+id.stringify).withRequestTimeout(5000.millis).get().map { response =>
-      jsValueToMovie(response.json)
+      jsValueToMovie(response.json).get
     }
   }
 
   def list(): Future[Seq[Movie]] = {
     var movies: Seq[Movie] = Seq.empty[Movie]
-    ws.url(backend+"/list").withRequestTimeout(5000.millis).get().map { response =>
-
+    wsget("/list").map { response =>
       for (movie <- response.json.as[JsArray].value) {
         val tryId = BSONObjectID.parse(((movie \ "_id") \ "$oid").as[String])
         tryId match {
@@ -77,8 +80,8 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
     }
 
   def delete(id: BSONObjectID) = {
-    ws.url(backend+"/delete/"+ id.stringify).withRequestTimeout(5000.millis).delete() map{ response =>
-      response.status match {
+    ws.url(backend+"/delete/"+ id.stringify).withRequestTimeout(5000.millis).delete() map{
+      _.status match {
         case 200 => 1
         case _ =>
       }
@@ -86,29 +89,22 @@ class MovieConnector @Inject()(ws: WSClient, val controllerComponents: Controlle
   }
 
   def search(searchTerm: String): Future[Seq[Movie]] = {
-    var movies: Seq[Movie] = Seq.empty[Movie]
     ws.url(backend+"/search/"+searchTerm).withRequestTimeout(5000.millis).get().map { response =>
-      for (value <- response.json.as[JsArray].value) {
-        jsValueToMovie(value) match {
-          case movie: Movie => movies = movies :+ movie
-          case null =>
-        }
-      }
-      movies
+      response.json.as[JsArray].value.flatMap(jsValueToMovie).toSeq
     }
   }
 
-  def jsValueToMovie(value: JsValue): Movie = {
+  def jsValueToMovie(value: JsValue): Option[Movie] = {
     val tryId = BSONObjectID.parse(((value \ "_id") \ "$oid").as[String])
     tryId match {
-      case Success(objectId) => Movie(objectId,
+      case Success(objectId) => Some(Movie(objectId,
         (value \ "title").as[String],
         (value \ "director").as[String],
         (value \ "actors").as[String],
         (value \ "rating").as[String],
         (value \ "genre").as[String],
-        (value \ "img").as[String])
-      case Failure(_) => null
+        (value \ "img").as[String]))
+      case Failure(_) => None
     }
   }
 
