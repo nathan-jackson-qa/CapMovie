@@ -109,43 +109,23 @@ class MovieConnectorTest extends AbstractTest {
 
       "return a 400" in new Setup(false) {
         await(mc.create(movieTemp1)) shouldBe false
-        }
       }
 
     "read a movie" should {
       "return an individual movie" in {
-        val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
-        tryId match {
-          case Success(value) =>
-            mc2.read(value).map { response =>
-              assert(response.equals(Seq(Movie(value, "Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg"))))
-            }
-          case Failure(exception) => assert(false)
-        }
+        await(mc2.read(movie1._id)) shouldBe movie1
       }
     }
 
     "search for a term" should {
       "return a list of movies matching the term" in new Setup(){
-        val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
-        tryId match {
-          case Success(value) =>
-            mc.search("gladiator").map { response =>
-              assert(response.equals(Seq(Movie(value, "Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg"))))
-            }
-          case Failure(exception) => assert(false)
-        }
+        await(mc.search(movie1.title)) shouldBe Seq(movie1)
       }
     }
+
     "filter by a genre" should {
       "give a list of movies matching that genre" in new Setup() {
-        val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
-        tryId match {
-          case Success(value) =>
-            mc.filterGenre("Action").map { response =>
-              assert(response.equals(Seq(Movie(value, "Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg"))))
-            }
-          case Failure(exception) => assert(false)
+          await(mc.filterGenre(movie1.genre)) shouldBe Seq(movie1)
         }
       }
     }
@@ -162,15 +142,7 @@ class MovieConnectorTest extends AbstractTest {
 
     "delete a movie" should {
       "successfully delete" in new Setup() {
-        val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
-        tryId match {
-          case Success(value) => {
-            mc.delete(tryId.get).map { response =>
-              assert(response.equals(true))
-            }
-          }
-          case Failure(exception) => assert(false)
-        }
+        await(mc.delete(movie1._id)) shouldBe true
       }
     }
   }
