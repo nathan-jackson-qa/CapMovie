@@ -66,7 +66,5 @@ class HomeControllerTest extends AsyncAbstractTest {
         }
       }
     }
-
-
   }
 }
