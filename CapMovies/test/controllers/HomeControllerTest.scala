@@ -73,13 +73,19 @@ class HomeControllerTest extends AsyncAbstractTest {
     }
 
     "DeleteMovie" should {
-      "Delete the movie object" in {
+      "Delete the movie object: Passed" in {
         when(mc.delete(any())) thenReturn Future.successful(true)
 
-        val result: Future[Result] = controller.deleteMovie(BSONObjectID.parse("609a678ce1a52451685d793f").get).apply(FakeRequest())
-        result.map{
-          x => assert(x.header.status.equals(200))
-        }
+        val result: Result = await(controller.deleteMovie(BSONObjectID.parse("609a678ce1a52451685d793f").get).apply(FakeRequest()))
+
+        result.header.status shouldBe 200
+      }
+      "Delete the movie object: Failed" in {
+        when(mc.delete(any())) thenReturn Future.successful(false)
+
+        val result: Result = await(controller.deleteMovie(BSONObjectID.parse("609a678ce1a52451685d793f").get).apply(FakeRequest()))
+
+        result.header.status shouldBe 400
       }
     }
 
