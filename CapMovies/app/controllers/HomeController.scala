@@ -31,7 +31,7 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     mc.delete(id).map{ results =>
      results match {
         case true => Ok(views.html.delete("SUCCESS"))
-        case false => Ok(views.html.delete("FAIL"))
+        case false => BadRequest(views.html.delete("FAIL"))
       }
     }
   }
