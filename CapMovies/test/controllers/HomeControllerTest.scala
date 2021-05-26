@@ -43,16 +43,25 @@ class HomeControllerTest extends AsyncAbstractTest {
         }
       }
     }
-  }
 
-  "HomeController" can {
-    "UpdateMovie" should {
+    "updateMovie" should {
       "update the movie object" in {
         when(mc.update(any())) thenReturn Future.successful(true)
 
         val result: Future[Result] = controller.updateMovie(BSONObjectID.parse("609a678ce1a52451685d793f").get).apply(FakeRequest().withFormUrlEncodedBody("title"-> "gg", "director" -> "gg", "actors" -> "gg", "rating" -> "gg", "genre" -> "gg", "img" -> "gg.jpg"))
         result.map{
           x => assert(x.header.status.equals(303))
+        }
+      }
+    }
+
+    "deleteMovie" should {
+      "OK" in {
+        when(mc.delete(any())) thenReturn Future.successful(true)
+
+        val result: Future[Result] = controller.deleteMovie(BSONObjectID.parse("609a678ce1a52451685d793f").get).apply(FakeRequest())
+        result.map {
+          x => assert(x.header.status.equals(300))
         }
       }
     }
