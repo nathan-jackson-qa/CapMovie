@@ -48,6 +48,10 @@ class MovieConnectorTest extends AbstractTest {
       override def wsput(url: String, jsObject: JsObject): Future[WSResponse] = {
         if (succeed) Future.successful(new TestResponse()) else Future.failed(new RuntimeException)
       }
+
+      override def wsdelete(url: String): Future[TestResponse] = {
+        if (succeed) Future.successful(new TestResponse()) else Future.failed(new RuntimeException)
+      }
     }
   }
   val mc2 = new MovieConnector(ws, cc, ec){
@@ -133,6 +137,20 @@ class MovieConnectorTest extends AbstractTest {
 
       "return false" in new Setup(false) {
         await(mc.update(movie1)) shouldBe false
+      }
+    }
+
+    "delete a movie" should {
+      "successfully delete" in new Setup() {
+        val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
+        tryId match {
+          case Success(value) => {
+            mc.delete(tryId.get).map { response =>
+              assert(response.equals(true))
+            }
+          }
+          case Failure(exception) => assert(false)
+        }
       }
     }
   }
