@@ -63,8 +63,5 @@ class HomeController @Inject()(cc: ControllerComponents, mc: MovieConnector) ext
     }
   }
 
-  def testPrint() = Action{ implicit request =>
-    Ok(views.html.blank())
-  }
 }
 

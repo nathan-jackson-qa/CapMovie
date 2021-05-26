@@ -12,7 +12,5 @@ GET     /update/:id                 controllers.HomeController.updateMovie(id: r
 
 GET     /search                     controllers.HomeController.search()
 
-GET     /CapMovies.test             controllers.HomeController.testPrint()
-
 GET     /filter                     controllers.HomeController.filter(genre: String)
 
