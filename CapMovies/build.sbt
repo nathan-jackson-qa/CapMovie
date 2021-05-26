@@ -29,9 +29,12 @@ libraryDependencies ++= Seq(
   // Provide BSON serialization for reactive mongo
   "org.reactivemongo" %% "reactivemongo-bson-compat" % "0.20.13",
   // Provide JSON serialization for Joda-Time
-  "com.typesafe.play" %% "play-json-joda" % "2.7.4"
+  "com.typesafe.play" %% "play-json-joda" % "2.7.4",
+  //Splice HTML
+  "org.jsoup"  %  "jsoup"  % "1.13.1"
 )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/CapMovies.test" )
 
 RoutesKeys.routesImport += "play.modules.reactivemongo.PathBindables._"
+

@@ -153,6 +153,15 @@ class MovieConnectorTest extends AbstractTest {
       "successfully delete" in new Setup() {
         await(mc.delete(movie1._id)) shouldBe true
       }
+      "unsuccessfully delete" in new Setup(false) {
+        await(mc.delete(movie1._id)) shouldBe false
+      }
+    }
+
+    "jsValueToMovie" should {
+      "fail when given a non-movie" in new Setup() {
+        mc.jsValueToMovie(Json.parse("""{"_id":{"$oid":"12334"}}""")) shouldBe None
+      }
     }
   }
 }

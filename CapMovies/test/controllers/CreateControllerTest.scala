@@ -20,11 +20,20 @@ class CreateControllerTest extends AsyncAbstractTest {
   "CreateController" can {
     "Add Movie" should {
       "Add a movie to the database" in {
-        //val movie = MovieTemp("DaveMcDave", "Davey", "McDavidsion", "BoatyMcBoatface", "asdasd", "asdasd")
         when(mc.create(any())) thenReturn Future.successful(true)
         val notResult: Future[Result] = controller.AddMovie.apply(FakeRequest().withFormUrlEncodedBody("title"->"gg", "director" -> "ridley", "actors" -> "gg", "rating" -> "18", "genre" -> "yes", "img" -> "asdasdasd"))
         notResult.map{
           x => assert(x.header.status.equals(303))
+        }
+      }
+    }
+
+    "Add Movie" should {
+      "Return an error if incorrect data added" in {
+        when(mc.create(any())) thenReturn Future.successful(true)
+        val notResult: Future[Result] = controller.AddMovie.apply(FakeRequest().withFormUrlEncodedBody())
+        notResult.map{
+          x => assert(x.header.status.equals(400))
         }
       }
     }
