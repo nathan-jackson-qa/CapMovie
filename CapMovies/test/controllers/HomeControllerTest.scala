@@ -122,6 +122,13 @@ class HomeControllerTest extends AsyncAbstractTest {
         doc.getElementsByClass("card-body").size() shouldBe 2
       }
 
+      "filter" should {
+        "OK" in {
+          when(mc.filter("Action")).thenReturn(Future.successful(Nil))
+          val result: Future[Result] = controller.filter("Action").apply(FakeRequest())
+          result.map(_.header.status shouldBe 200)
+        }
+      }
     }
   }
 }
