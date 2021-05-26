@@ -142,15 +142,7 @@ class MovieConnectorTest extends AbstractTest {
 
     "delete a movie" should {
       "successfully delete" in new Setup() {
-        val tryId = BSONObjectID.parse("609a678ce1a52451685d793f")
-        tryId match {
-          case Success(value) => {
-            mc.delete(tryId.get).map { response =>
-              assert(response.equals(true))
-            }
-          }
-          case Failure(exception) => assert(false)
-        }
+        await(mc.delete(movie1._id)) shouldBe true
       }
     }
   }
