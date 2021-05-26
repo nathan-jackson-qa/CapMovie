@@ -32,6 +32,8 @@ class HomeControllerTest extends AsyncAbstractTest {
   val mc = mock(classOf[MovieConnector])
   val controller = new HomeController(Helpers.stubControllerComponents(), mc)
 
+  val movie1 = Movie(BSONObjectID.parse("609a678ce1a52451685d793f").get, "Gladiator", "Ridley Scott", "Russell Crowe", "R", "Action", "images/posters/gladiator.jpg")
+
   "HomeController" can {
 
     "index" should {
@@ -53,6 +55,15 @@ class HomeControllerTest extends AsyncAbstractTest {
         result.map{
           x => assert(x.header.status.equals(303))
         }
+      }
+    }
+
+    "moviePage" should {
+      "OK" in {
+        when(mc.read(any())) thenReturn Future.successful(movie1)
+
+        val result: Future[Result] = controller.moviePage(movie1._id).apply(FakeRequest())
+        result.map(_.header.status shouldBe 200)
       }
     }
 
