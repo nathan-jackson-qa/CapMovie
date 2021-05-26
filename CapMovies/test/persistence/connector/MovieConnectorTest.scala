@@ -140,6 +140,15 @@ class MovieConnectorTest extends AbstractTest {
       }
     }
 
+    "filter function " should {
+      "list all movies when all is selected " in new Setup() {
+        await(mc.filter("All")) shouldBe Seq(movie1)
+      }
+      "list a specific genre of movies when selected " in new Setup() {
+        await(mc.filter("Action")) shouldBe Seq(movie1)
+      }
+    }
+
     "delete a movie" should {
       "successfully delete" in new Setup() {
         await(mc.delete(movie1._id)) shouldBe true
