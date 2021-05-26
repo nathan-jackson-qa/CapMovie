@@ -18,7 +18,7 @@ import org.scalatest.wordspec.{AnyWordSpec, AsyncWordSpec}
 import scala.concurrent.{Await, Future}
 import persistence.connector.MovieConnector
 import persistence.domain.Movie
-import reactivemongo.bson.BSONObjectID
+import reactivemongo.bson.{BSONDocumentHandler, BSONObjectID}
 import test.AsyncAbstractTest
 
 import java.net.URI
@@ -33,6 +33,7 @@ class HomeControllerTest extends AsyncAbstractTest {
   val controller = new HomeController(Helpers.stubControllerComponents(), mc)
 
   "HomeController" can {
+
     "index" should {
       "do something" in {
         when(mc.list()).thenReturn(Future.successful(Nil))
@@ -44,7 +45,7 @@ class HomeControllerTest extends AsyncAbstractTest {
       }
     }
 
-    "updateMovie" should {
+    "UpdateMovie" should {
       "update the movie object" in {
         when(mc.update(any())) thenReturn Future.successful(true)
 
@@ -55,17 +56,15 @@ class HomeControllerTest extends AsyncAbstractTest {
       }
     }
 
-    "deleteMovie" should {
-      "OK" in {
+    "DeleteMovie" should {
+      "Delete the movie object" in {
         when(mc.delete(any())) thenReturn Future.successful(true)
 
         val result: Future[Result] = controller.deleteMovie(BSONObjectID.parse("609a678ce1a52451685d793f").get).apply(FakeRequest())
-        result.map {
-          x => assert(x.header.status.equals(300))
+        result.map{
+          x => assert(x.header.status.equals(200))
         }
       }
     }
   }
-
-
 }
